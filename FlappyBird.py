@@ -16,8 +16,8 @@ channel_1.play(bgm)
 keep_going = True
 clock = pygame.time.Clock()
 # 分数设定
+best = -1
 score = 0
-best = 0
 
 class Bird(pygame.sprite.Sprite):
 	def __init__(self):
@@ -45,14 +45,10 @@ class Bird(pygame.sprite.Sprite):
 		global best
 		if self.rect.left == newWall.wallUpRect.right: # 如果水管矩形右边等于小鸟左边的x坐标
 			score = score + 1 # score增加1
-			if score > best:
-				best = score + 0
-				print(best,score)
 	def birdCrush(self):
 		global keep_going
 		resultU = self.rect.colliderect(newWall.wallUpRect)
 		resultD = self.rect.colliderect(newWall.wallDownRect)
-
 		if resultU or resultD or newBird.rect.bottom >= ground.rect.top:
 			hit = pygame.mixer.Sound('sound/hit.wav')
 			channel_3 = pygame.mixer.Channel(3)
@@ -88,18 +84,25 @@ class Wall():
 			self.wallDownY = 0 - self.gap - self.offset
 
 class Text(): # 显示分数
-	def __init__(self,content):
+	def __init__(self,connect):
 		red = (100,50,50)
 		self.color = red # 为文字设置一个颜色
 		# SysFont(字体名, 大小) -> Font
 		self.font = pygame.font.SysFont(None,52) # 设置字体与大小
-		contentStr = str(content)
+		connectStr = str(connect)
 		# pygame.font.render(文字内容,是否平滑,文字颜色)
-		self.image = self.font.render(contentStr,True,self.color) # 设置文本内容
+		self.image = self.font.render(connectStr,True,self.color) # 设置文本内容
 
-	def updateText(self,content): # 更新文字
-		contentStr = str(content)
-		self.image = self.font.render(contentStr,True,self.color)
+	def updateText(self,connect): # 更新文字
+		connectStr = str(connect)
+		self.image = self.font.render(connectStr,True,self.color)
+
+	def topupdateText(self,connect):
+		connectStr = str(connect)
+		self.connectStr = str(connect)
+		self.font = pygame.font.SysFont(None,32)
+		if keep_going == False:
+			self.image = self.font.render("Best play: " + connectStr,True,self.color)
 
 class Groud():
 	def __init__(self):
@@ -108,27 +111,12 @@ class Groud():
 		self.rect.bottom = 560
 		self.rect.left =- 30
 
-class TopText(): # 显示分数
-	def __init__(self,content):
-		red = (100,50,50)
-		self.color = red # 为文字设置一个颜色
-		# SysFont(字体名, 大小) -> Font
-		self.font = pygame.font.SysFont(None,31) # 设置字体与大小
-		contentStr = str(content)
-		# pygame.font.render(文字内容,是否平滑,文字颜色)
-		self.image = self.font.render("Best play:" + contentStr,True,self.color) # 设置文本内容
-		print(content)
-	def updateText(self,content): # 更新文字
-		contentStr = str(content)
-		self.image = self.font.render("Best play:" + contentStr,True,self.color)
-		print(content)
-
 coolText = Text(score)
 newBird = Bird()
 newWall = Wall()
 endText = Text("END")
 ground = Groud()
-bestText = TopText(best)
+bestText = Text(best)
 
 while True:
 	for event in pygame.event.get():
@@ -141,6 +129,7 @@ while True:
 				channel_2 = pygame.mixer.Channel(2)
 				fly = pygame.mixer.Sound('sound/fly.WAV')
 				channel_2.play(fly)
+				print(best)
 		else:
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_SPACE:
@@ -159,12 +148,16 @@ while True:
 	screen.blit(coolText.image,(10,10))
 	screen.blit(ground.image,ground.rect)
 
-	newWall.wallUpdate()
-	newBird.birdUpdate()
+	if score > best:
+		best = score + 0
+		#print(best,score)
+	coolText.updateText(score)
+	bestText.topupdateText(best)
 	# 是否绘制分数,检测小鸟撞毁
 	if keep_going:
+		newWall.wallUpdate()
+		newBird.birdUpdate()
 		newBird.birdCrush()
-		coolText.updateText(score)
 	else:
 		screen.blit(bestText.image,(85,265))
 		screen.blit(endText.image,(110,230))
