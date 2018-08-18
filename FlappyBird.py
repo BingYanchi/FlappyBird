@@ -1,7 +1,7 @@
 # Flappy Bird by Bing_Fenghan
-import pygame
-import random
-import sys
+import pygame # pygame 需要手动安装
+import random # random 为 python 安装自带
+import sys # sys 用于快速结束程序
 # 初始化与画布大小
 pygame.init() # 完成初始设置
 screen = pygame.display.set_mode([288,512]) # 创建指定大小的画布
