@@ -23,7 +23,7 @@ class Bird(pygame.sprite.Sprite): # 包含编写游戏对象时所需的很多�
 	def __init__(self): # 初始化
 		pygame.sprite.Sprite.__init__(self) # 调用主 Sprite 类的初始化函数
 		# 设置小鸟图像
-		self.birdSprites = [pygame.image.load("assets/0.png"),pygame.image.load("assets/1.png"),pygame.image.load("assets/2.png")]
+		self.birdSprites=[pygame.image.load("assets/0.png"),pygame.image.load("assets/1.png"),pygame.image.load("assets/2.png")]
 		self.a = 0 # 赋值变量
 		self.birdX = 50 # 小鸟初始x坐标
 		self.birdY = 100 # 小鸟初始y坐标
