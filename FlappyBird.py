@@ -1,4 +1,4 @@
-# Flappy Bird
+# Flappy Bird by Bing_Fenghan
 import pygame
 import random
 import sys
@@ -16,16 +16,17 @@ channel_1.play(bgm)
 keep_going = True
 clock = pygame.time.Clock()
 # 分数设定
-best = -1
-score = 0
-
-class Bird(pygame.sprite.Sprite):
-	def __init__(self):
-		pygame.sprite.Sprite.__init__(self)
+best = -1 # 最高分
+score = 0 # 当前分值
+# 小鸟
+class Bird(pygame.sprite.Sprite): # 包含编写游戏对象时所需的很多功能
+	def __init__(self): # 初始化
+		pygame.sprite.Sprite.__init__(self) # 调用主 Sprite 类的初始化函数
+		# 设置小鸟图像
 		self.birdSprites = [pygame.image.load("assets/0.png"),pygame.image.load("assets/1.png"),pygame.image.load("assets/2.png")]
-		self.a = 0
-		self.birdX = 50 # 初始x坐标
-		self.birdY = 100 # 初始y坐标
+		self.a = 0 # 赋值变量
+		self.birdX = 50 # 小鸟初始x坐标
+		self.birdY = 100 # 小鸟初始y坐标
 		self.jumpSpeed = 7 # 跳跃高度
 		self.gravity = 0.4 # 跳跃重力
 
@@ -54,7 +55,7 @@ class Bird(pygame.sprite.Sprite):
 			channel_3 = pygame.mixer.Channel(3)
 			channel_3.play(hit)
 			keep_going = False
-
+# 墙
 class Wall():
 	def __init__(self):
 		self.wallUp = pygame.image.load("assets/bottom.png")
@@ -62,7 +63,7 @@ class Wall():
 		self.wallUpRect = self.wallUp.get_rect()
 		self.wallDownRect = self.wallDown.get_rect()
 
-		self.gap = 60 # 缝隙间隔
+		self.gap = 50 # 缝隙间隔
 		self.wallx = 288
 		self.offset = random.randint(-50, 50)
 
@@ -82,7 +83,7 @@ class Wall():
 			self.offset = random.randint(-50, 50)
 			self.wallUpY = 360 + self.gap - self.offset
 			self.wallDownY = 0 - self.gap - self.offset
-
+# 文字
 class Text(): # 显示分数
 	def __init__(self,connect):
 		red = (100,50,50)
@@ -103,7 +104,7 @@ class Text(): # 显示分数
 		self.font = pygame.font.SysFont(None,32)
 		if keep_going == False:
 			self.image = self.font.render("Best play: " + connectStr,True,self.color)
-
+# 地板
 class Groud():
 	def __init__(self):
 		self.image = pygame.image.load("assets/ground.png")
@@ -111,14 +112,14 @@ class Groud():
 		self.rect.bottom = 560
 		self.rect.left =- 30
 
-coolText = Text(score)
-newBird = Bird()
-newWall = Wall()
-endText = Text("END")
-ground = Groud()
-bestText = Text(best)
-
-while True:
+newBird = Bird() # 创建小鸟
+newWall = Wall() # 创建墙
+ground = Groud() # 创建地板
+endText = Text("END") # 创建结束标语
+coolText = Text(score) # 创建分数
+bestText = Text(best) # 创建最高分
+# 主程序
+while True: # 循环执行
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			# 直接退出循环，结束所有进程
@@ -129,7 +130,6 @@ while True:
 				channel_2 = pygame.mixer.Channel(2)
 				fly = pygame.mixer.Sound('sound/fly.WAV')
 				channel_2.play(fly)
-				print(best)
 		else:
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_SPACE:
@@ -140,29 +140,29 @@ while True:
 					newBird.birdY = 100
 					newWall.wallx = 288
 					newBird.jumpSpeed = 7
-
-	screen.blit(background,(0,0))
-	screen.blit(newBird.birdSprites[newBird.a],newBird.rect)
-	screen.blit(newWall.wallUp,newWall.wallUpRect)
-	screen.blit(newWall.wallDown,newWall.wallDownRect)
-	screen.blit(coolText.image,(10,10))
-	screen.blit(ground.image,ground.rect)
-
+	# 设置位置
+	screen.blit(background,(0,0)) # 设置背景位置
+	screen.blit(newBird.birdSprites[newBird.a],newBird.rect) # 设置小鸟位置
+	screen.blit(newWall.wallUp,newWall.wallUpRect) # 设置上墙位置
+	screen.blit(newWall.wallDown,newWall.wallDownRect) # 设置下墙位置
+	screen.blit(coolText.image,(10,10)) # 设置分数位置
+	screen.blit(ground.image,ground.rect) # 设置地板位置
+	# 当分数大于最高分时进行更新
 	if score > best:
-		best = score + 0
-		#print(best,score)
+		best = score
+
 	coolText.updateText(score)
 	bestText.topupdateText(best)
 	# 是否绘制分数,检测小鸟撞毁
 	if keep_going:
-		newWall.wallUpdate()
-		newBird.birdUpdate()
-		newBird.birdCrush()
+		newWall.wallUpdate() # 调用墙更新
+		newBird.birdUpdate() # 调用小鸟更新
+		newBird.birdCrush() # 调用小鸟撞击
 	else:
-		screen.blit(bestText.image,(85,265))
-		screen.blit(endText.image,(110,230))
+		screen.blit(bestText.image,(85,265)) # 调用结束标语
+		screen.blit(endText.image,(110,230)) # 调用最高分
 
-	pygame.display.update()
-	clock.tick(60)
+	pygame.display.update() # 调用游戏更新
+	clock.tick(60) # 帧数设定
 
-pygame.quit()
+pygame.quit() # 结束游戏
