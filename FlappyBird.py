@@ -22,7 +22,7 @@ score = 0
 class Bird(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
-		self.birdSprites = [pygame.image.load("assets/0.png"), pygame.image.load("assets/1.png"), pygame.image.load("assets/2.png")]
+		self.birdSprites = [pygame.image.load("assets/0.png"),pygame.image.load("assets/1.png"),pygame.image.load("assets/2.png")]
 		self.a = 0
 		self.birdX = 50 # 初始x坐标
 		self.birdY = 100 # 初始y坐标
