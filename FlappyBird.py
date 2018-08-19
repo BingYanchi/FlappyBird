@@ -47,7 +47,7 @@ class Bird(pygame.sprite.Sprite): # 包含编写游戏对象时所需的很多�
 		global keep_going # 声明 keep_going 是全局变量
 		resultU = self.rect.colliderect(newWall.wallUpRect) # 调用上墙矩形检测
 		resultD = self.rect.colliderect(newWall.wallDownRect) # 调用下墙矩形检测
-		if resultU or resultD or newBird.rect.bottom >= ground.rect.top: # 矩形检测
+		if resultU or resultD or newBird.rect.bottom >= ground.rect.top or newBird.rect.bottom < -1: # 矩形检测
 			hit = pygame.mixer.Sound('sound/hit.wav') # 加载撞击声音
 			channel_3 = pygame.mixer.Channel(3) # 设置为第三层
 			channel_3.play(hit) # 播放撞击声音
@@ -59,7 +59,7 @@ class Wall(): # 加载水管
 		self.wallDown = pygame.image.load("assets/top.png") # 加载下墙
 		self.wallUpRect = self.wallUp.get_rect() # 绘制上墙矩形
 		self.wallDownRect = self.wallDown.get_rect() # 绘制下墙矩形
-		self.gap = 50 # 缝隙间隔
+		self.gap = 45 # 缝隙间隔
 		self.wallx = 288 # 墙的 x 坐标
 		self.offset = random.randint(-50, 50) # 随机取 y 坐标
 		self.wallUpY = 360 + self.gap - self.offset # 计算上墙 y 坐标
@@ -67,7 +67,7 @@ class Wall(): # 加载水管
 		self.wallUpRect.center = (self.wallx,self.wallUpY) # 更新上墙矩形
 		self.wallDownRect.center = (self.wallx,self.wallDownY) # 更新下墙矩形
 	def wallUpdate(self): # 墙更新
-		self.wallx -= 2 # 速度 2
+		self.wallx -= 3 # 速度 2
 		self.wallUpRect.center = (self.wallx,self.wallUpY) # 更新上香矩形
 		self.wallDownRect.center = (self.wallx,self.wallDownY) # 更新下墙矩形
 		if self.wallx < -370: # 如果墙移出画面
@@ -120,14 +120,13 @@ while True: # 循环执行
 				channel_2.play(fly) # 播放飞行声音
 		else: # 否则执行
 			if event.type == pygame.KEYDOWN: # 如果键盘执行任意键
-				if event.key == pygame.K_SPACE: # 如果按下的为空格
-					# 重置游戏参数,重新开始
-					keep_going = True # 设置 Keep_going 为 True
-					score = 0 # 设置分数为 0
-					newBird.birdX = 50 # 设置小鸟的 x 坐标
-					newBird.birdY = 100 # 设置小鸟的 y 坐标
-					newBird.jumpSpeed = 7 # 设置小鸟的跳跃速度
-					newWall.wallx = 288 # 设置墙的 x 坐标
+				# 重置游戏参数,重新开始
+				keep_going = True # 设置 Keep_going 为 True
+				score = 0 # 设置分数为 0
+				newBird.birdX = 50 # 设置小鸟的 x 坐标
+				newBird.birdY = 100 # 设置小鸟的 y 坐标
+				newBird.jumpSpeed = 7 # 设置小鸟的跳跃速度
+				newWall.wallx = 288 # 设置墙的 x 坐标
 	# 设置位置
 	screen.blit(background,(0,0)) # 设置背景位置
 	screen.blit(newBird.birdSprites[newBird.a],newBird.rect) # 设置小鸟位置
@@ -147,8 +146,8 @@ while True: # 循环执行
 		newBird.birdUpdate() # 调用小鸟更新
 		newBird.birdCrush() # 调用小鸟撞击
 	else: # 否则运行
-		screen.blit(bestText.image,(85,265)) # 调用结束标语
-		screen.blit(endText.image,(110,230)) # 调用最高分
+		screen.blit(bestText.image,(85,235)) # 调用结束标语
+		screen.blit(endText.image,(110,200)) # 调用最高分
 	#基础类设置
 	pygame.display.update() # 调用游戏更新
 	clock.tick(60) # 帧数设定
