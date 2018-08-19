@@ -137,7 +137,7 @@ while True: # 循环执行
 	# 当分数大于最高分时进行更新
 	if score > best: # 如果当前分数大于最高分
 		best = score # 最高分为当前分数
-	#分数更新
+	# 分数更新
 	coolText.updateText(score) # 调用分数更新
 	bestText.topupdateText(best) # 调用最高分更新
 	# 是否绘制分数,检测小鸟撞毁
@@ -148,7 +148,7 @@ while True: # 循环执行
 	else: # 否则运行
 		screen.blit(bestText.image,(85,235)) # 调用结束标语
 		screen.blit(endText.image,(110,200)) # 调用最高分
-	#基础类设置
+	# 基础类设置
 	pygame.display.update() # 调用游戏更新
 	clock.tick(60) # 帧数设定
 pygame.quit() # 撤销初始化后的设置
