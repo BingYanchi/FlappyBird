@@ -1,4 +1,4 @@
-# Flappy Bird by Bing_Fenghan
+# Flappy Bird by Bing_Yanchi
 import pygame # pygame 需要手动安装
 import random # random 为 python 安装自带
 import sys # sys 用于快速结束程序,Python 自带
