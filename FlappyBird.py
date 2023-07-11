@@ -68,7 +68,7 @@ class Wall(): # 加载水管
 		self.wallDownRect.center = (self.wallx,self.wallDownY) # 更新下墙矩形
 	def wallUpdate(self): # 墙更新
 		self.wallx -= 3 # 速度 2
-		self.wallUpRect.center = (self.wallx,self.wallUpY) # 更新上香矩形
+		self.wallUpRect.center = (self.wallx,self.wallUpY) # 更新上墙矩形
 		self.wallDownRect.center = (self.wallx,self.wallDownY) # 更新下墙矩形
 		if self.wallx < -370: # 如果墙移出画面
 			self.wallx = 360 # 重新设置墙的 x 坐标
